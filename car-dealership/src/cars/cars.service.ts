@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { generateUuid } from 'src/common';
-import { CreateCardDTO } from './dtos/create-car.dto';
+import { UpdateCardDTO, CreateCardDTO } from './dtos';
 import { ICar } from './interface/car.interface';
 
 export interface ICarService {
   findAll(): ICar[];
   findOne(id: string): ICar;
   create(createCarDto: CreateCardDTO): ICar;
+  update(id: string, updateCarDto: UpdateCardDTO): ICar;
 }
 @Injectable()
 export class CarsService implements ICarService {
@@ -22,7 +23,7 @@ export class CarsService implements ICarService {
       model: 'Civic',
     },
     {
-      id: generateUuid.execute(),
+      id: '9f833418-4278-441e-9185-0c1e07870efc',
       brand: 'Jeep',
       model: 'Cherokee',
     },
@@ -42,5 +43,20 @@ export class CarsService implements ICarService {
     };
     this.cars.push(newCar);
     return newCar;
+  }
+  update(id: string, updateCarDto: UpdateCardDTO): ICar {
+    let carDB = this.findOne(id);
+    this.cars = this.cars.map((car) => {
+      if (car.id === id) {
+        carDB = {
+          id,
+          ...carDB,
+          ...updateCarDto,
+        };
+        return carDB;
+      }
+      return car;
+    });
+    return carDB;
   }
 }
