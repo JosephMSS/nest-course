@@ -8,6 +8,7 @@ export interface ICarService {
   findOne(id: string): ICar;
   create(createCarDto: CreateCardDTO): ICar;
   update(id: string, updateCarDto: UpdateCardDTO): ICar;
+  delete(id: string): void;
 }
 @Injectable()
 export class CarsService implements ICarService {
@@ -58,5 +59,9 @@ export class CarsService implements ICarService {
       return car;
     });
     return carDB;
+  }
+  delete(id: string): void {
+    this.findOne(id);
+    this.cars = this.cars.filter((car) => car.id !== id);
   }
 }
