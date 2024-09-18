@@ -10,6 +10,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { CarsService } from './cars.service';
+import { CreateCardDTO } from './dtos/create-car.dto';
 @Controller('cars')
 export class CarsController {
   constructor(private readonly carsService: CarsService) {}
@@ -22,12 +23,15 @@ export class CarsController {
     return this.carsService.findOne(id);
   }
   @Post()
-  create(@Body() body: any) {
-    return body;
+  create(@Body() createCarDto: CreateCardDTO) {
+    return createCarDto;
   }
   @Patch(':id')
-  update(@Body() body: any, @Param('id', ParseUUIDPipe) id: string) {
-    return body;
+  update(
+    @Body() createCarDto: CreateCardDTO,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    return createCarDto;
   }
   @Delete(':id')
   delete(@Param('id', ParseUUIDPipe) id: string) {
